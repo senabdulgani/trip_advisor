@@ -20,31 +20,13 @@ class HomeMapBodyState extends State<HomeMapBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 2, 
-            child: GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: _kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-          ),
-          const Text('Change Language').tr(),
-          ElevatedButton(
-            onPressed: (){
-            ProductLocalization.updateLanguage(
-              context: context,
-              value: Locales.en,
-              );
-          }, child: const Text('Change Language')),
-        ],
+      body: GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
       ),
     );
   }
-
-  
 }
