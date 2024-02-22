@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trip_advisor/core/costum_divider.dart';
 import 'package:trip_advisor/core/navigation_input.dart';
+import 'package:trip_advisor/feature/hub/hub_view.dart';
 import 'package:trip_advisor/feature/home/view/home_view.dart';
+import 'package:trip_advisor/feature/search/location_search_screen.dart';
+import 'package:trip_advisor/feature/settings/view/settings_view.dart';
 import '../../../../core/costum_left_text.dart';
 
 mixin HomeBottomMixin on State<BottomNavBar> {
@@ -13,39 +15,69 @@ mixin HomeBottomMixin on State<BottomNavBar> {
       _currentIndex = index;
 
       if (index == 0) {
-        showNavigationBottomSheet(context);
+        showModalSheet(context, const NavigationInputsBottomSheet(),isScrollControlled: true);
       } else if (index == 1) {
+        showModalSheet(context, const SearchLocationScreen(),isScrollControlled: true);
       } else if (index == 2) {
+        showModalSheet(context, const HubView());
       } else if (index == 3) {
-      } else if (index == 4) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const SettingsView();
+            },
+          ),
+        );
       }
     });
   }
 
-  void showNavigationBottomSheet(BuildContext context) {
+  void showModalSheet(BuildContext context, Widget child, {bool? isScrollControlled}) {
     showModalBottomSheet(
+      isScrollControlled: isScrollControlled ?? false,
       context: context,
       builder: (BuildContext context) {
-        return const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              CostumHeaderInLeft(title: 'Route'),
-              LocationInput(
-                text: 'From',
-                iconData: Icons.arrow_forward,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              LocationInput(
-                text: 'To',
-                iconData: Icons.arrow_back,
-              ),
-            ],
-          ),
-        );
+        return child;
       },
+    );
+  }
+}
+
+class NavigationInputsBottomSheet extends StatelessWidget {
+  const NavigationInputsBottomSheet({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation'),
+        toolbarHeight: 120,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            const CostumHeaderInLeft(title: 'Route'),
+            LocationInput(
+              text: 'From',
+              iconData: Icons.arrow_forward,
+              onTap: () {
+                
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const LocationInput(
+              text: 'To',
+              iconData: Icons.arrow_forward,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

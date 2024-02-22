@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'autocomplate_prediction.dart';
+import 'package:trip_advisor/feature/search/models/autocomplate_prediction.dart';
 
 /// The Autocomplete response contains place predictions and status
 class PlaceAutocompleteResponse {

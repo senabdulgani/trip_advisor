@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:trip_advisor/feature/home/view/home_view.dart';
-import 'package:trip_advisor/sample/components/network_utility.dart';
-import 'package:trip_advisor/sample/models/autocomplate_prediction.dart';
-import 'package:trip_advisor/sample/models/place_auto_complate_response.dart';
+import 'package:trip_advisor/product/service/network_utility.dart';
+import 'package:trip_advisor/feature/search/models/autocomplate_prediction.dart';
+import 'package:trip_advisor/feature/search/models/place_auto_complate_response.dart';
 import 'components/location_list_tile.dart';
 import 'constants.dart';
 
@@ -43,25 +40,26 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: defaultPadding),
-          child: CircleAvatar(
-            backgroundColor: secondaryColor10LightTheme,
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const HomeView();
-                    },
-                  ),
-                );
-              },
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
-            ),
-          ),
-        ),
+        toolbarHeight: 120,
+        // leading: Padding(
+        //   padding: const EdgeInsets.only(left: defaultPadding),
+        //   child: CircleAvatar(
+        //     backgroundColor: secondaryColor10LightTheme,
+        //     child: IconButton(
+        //       onPressed: () {
+        //         Navigator.push(
+        //           context,
+        //           MaterialPageRoute(
+        //             builder: (context) {
+        //               return const HomeView();
+        //             },
+        //           ),
+        //         );
+        //       },
+        //       icon: const Icon(Icons.arrow_back, color: Colors.black),
+        //     ),
+        //   ),
+        // ),
         title: const Text(
           "Set Delivery Location",
           style: TextStyle(color: textColorLightTheme),
