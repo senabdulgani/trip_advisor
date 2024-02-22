@@ -1,0 +1,21 @@
+{
+    "home" : {
+        "title" : "Ev",
+        "description" : "Ev sayfasına hoşgeldiniz"
+    },
+
+    "general" : {
+        "button" : {
+            "Save": "Kaydet",
+            "Cancel": "İptal"
+
+        },
+        "dialog" : {
+            "title" : "Uyarı",
+            "description" : "Bu bir penceredir."
+        },
+
+        "title" : "Genel",
+        "description" : "Genel sayfasına hoşgeldiniz"
+    }
+}

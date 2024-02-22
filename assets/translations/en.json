@@ -1,0 +1,21 @@
+{
+    "home" : {
+        "title" : "Home",
+        "description" : "Welcome to the home page"
+    },
+
+    "general" : {
+        "button" : {
+            "Save": "Save",
+            "Cancel": "Cancel"
+
+        },
+        "dialog" : {
+            "title" : "Alert",
+            "description" : "This is a dialog box"
+        },
+
+        "title" : "General",
+        "description" : "Welcome to the general home page"
+    }
+}
