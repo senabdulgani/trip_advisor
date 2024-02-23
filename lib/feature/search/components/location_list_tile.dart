@@ -9,8 +9,7 @@ class LocationListTile extends StatelessWidget {
   }) : super(key: key);
 
   final String location;
-  final VoidCallback press;
-
+  final Function()? press;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,7 +17,10 @@ class LocationListTile extends StatelessWidget {
         ListTile(
           onTap: press,
           horizontalTitleGap: 0,
-          leading: const Icon(Icons.abc),
+          leading: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.location_on_outlined,),
+          ),
           title: Text(
             location,
             maxLines: 2,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trip_advisor/product/service/network_utility.dart';
-import 'package:trip_advisor/feature/search/models/autocomplate_prediction.dart';
-import 'package:trip_advisor/feature/search/models/place_auto_complate_response.dart';
+import 'package:trip_advisor/feature/search/view/mixin/location_search_mixin.dart';
 import 'components/location_list_tile.dart';
 import 'constants.dart';
 
@@ -12,93 +10,24 @@ class SearchLocationScreen extends StatefulWidget {
   State<SearchLocationScreen> createState() => _SearchLocationScreenState();
 }
 
-class _SearchLocationScreenState extends State<SearchLocationScreen> {
-  List<AutocompletePrediction> placePredictions = [];
-
-  void placeAutocomplate(String query) async {
-    Uri uri = Uri.https(
-        "maps.googleapis.com",
-        'maps/api/place/autocomplete/json', // unencoder path
-        {
-          "input": query, // query parameter
-          "key": apiKey, // make sure you add your api key
-        });
-    String? response = await NetworkUtility.fetchUrl(uri);
-    if (response != null) {
-      PlaceAutocompleteResponse result =
-          PlaceAutocompleteResponse.parseAutocompleteResult(response);
-      if (result.predictions != null) {
-        setState(() {
-          placePredictions = result.predictions!;
-        });
-      }
-    }
-// its time to make the GET request
-  }
+class _SearchLocationScreenState extends State<SearchLocationScreen> with LocationSearchMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 120,
-        // leading: Padding(
-        //   padding: const EdgeInsets.only(left: defaultPadding),
-        //   child: CircleAvatar(
-        //     backgroundColor: secondaryColor10LightTheme,
-        //     child: IconButton(
-        //       onPressed: () {
-        //         Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //             builder: (context) {
-        //               return const HomeView();
-        //             },
-        //           ),
-        //         );
-        //       },
-        //       icon: const Icon(Icons.arrow_back, color: Colors.black),
-        //     ),
-        //   ),
-        // ),
-        title: const Text(
-          "Set Delivery Location",
-          style: TextStyle(color: textColorLightTheme),
-        ),
-        actions: [
-          CircleAvatar(
-            backgroundColor: secondaryColor10LightTheme,
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.close, color: Colors.black),
-            ),
-          ),
-          const SizedBox(width: defaultPadding)
-        ],
-      ),
-      body: Column(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: Column(
         children: [
-          Form(
-            child: Padding(
-              padding: const EdgeInsets.all(defaultPadding),
-              child: TextFormField(
-                onChanged: (value) {
-                  placeAutocomplate(value);
+          Expanded(
+            child: ListView.builder(
+              itemCount: placePredictions.length,
+              itemBuilder: (context, index) => LocationListTile(
+                press: () {
+                  
                 },
-                textInputAction: TextInputAction.search,
-                decoration: const InputDecoration(
-                  hintText: "Search your location",
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Icon(Icons.abc),
-                  ),
-                ),
+                location: placePredictions[index].description!,
               ),
             ),
-          ),
-          const Divider(
-            height: 4,
-            thickness: 4,
-            color: secondaryColor5LightTheme,
           ),
           Padding(
             padding: const EdgeInsets.all(defaultPadding),
@@ -125,12 +54,21 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             thickness: 4,
             color: secondaryColor5LightTheme,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: placePredictions.length,
-              itemBuilder: (context, index) => LocationListTile(
-                press: () {},
-                location: placePredictions[index].description!,
+          Form(
+            child: Padding(
+              padding: const EdgeInsets.all(defaultPadding),
+              child: TextFormField(
+                onChanged: (value) {
+                  placeAutocomplate(value);
+                },
+                textInputAction: TextInputAction.search,
+                decoration: const InputDecoration(
+                  hintText: "Search locations",
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Icon(Icons.search),
+                  ),
+                ),
               ),
             ),
           ),
