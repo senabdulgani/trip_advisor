@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: HomeAppBar(),
+      // appBar: HomeAppBar(),
       body: HomeMapBody(),
       bottomNavigationBar: BottomNavBar(),
     );

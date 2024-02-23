@@ -51,29 +51,40 @@ class NavigationInputsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Navigation'),
-        toolbarHeight: 120,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(8),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      height: MediaQuery.of(context).size.height * 0.24,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
         child: Column(
           children: <Widget>[
             const CostumHeaderInLeft(title: 'Route'),
+            // todo Add the category services logo in future
             LocationInput(
               text: 'From',
-              iconData: Icons.arrow_forward,
+              iconData: Icons.location_on_rounded,
               onTap: () {
                 
               },
+              isFirst: true,
             ),
-            const SizedBox(
-              height: 10,
+            const Padding(
+              padding: EdgeInsets.only(left: 24.0, right: 12),
+              child: Divider(
+                height: 0,
+                color: Colors.black,
+                thickness: 0,
+              ),
             ),
             const LocationInput(
               text: 'To',
-              iconData: Icons.arrow_forward,
+              iconData: Icons.golf_course,
+              isFirst: false,
             ),
           ],
         ),
