@@ -1,5 +1,5 @@
 name: trip_advisor
-description: "A new Flutter project."
+description: "Get advices from other travelers and share your own experiences. Also, you can find the best places to visit in the world by AI."
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,10 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_maps_flutter: ^2.5.3
   easy_localization: ^3.0.4
   http: ^1.2.0
   geolocator: ^11.0.0
+  google_maps_flutter: ^2.5.3
+  flutter_polyline_points: ^2.0.0
+  google_places_flutter: ^2.0.8
 
 dev_dependencies:
   flutter_test:

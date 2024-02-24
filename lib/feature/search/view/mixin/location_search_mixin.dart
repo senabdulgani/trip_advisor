@@ -13,10 +13,10 @@ mixin LocationSearchMixin on State<SearchLocationScreen> {
   void placeAutocomplate(String query) async {
     Uri uri = Uri.https(
         "maps.googleapis.com",
-        'maps/api/place/autocomplete/json', // unencoder path
+        'maps/api/place/autocomplete/json',
         {
-          "input": query, // query parameter
-          "key": apiKey, // make sure you add your api key
+          "input": query,
+          "key": apiKey,
         });
     String? response = await NetworkUtility.fetchUrl(uri);
     if (response != null) {
@@ -28,6 +28,6 @@ mixin LocationSearchMixin on State<SearchLocationScreen> {
         });
       }
     }
-    // its time to make the GET request
+    
   }
 }

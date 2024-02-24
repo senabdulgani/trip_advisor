@@ -1,32 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:trip_advisor/feature/home/view/mixin/home_map_mixin.dart';
 
-part of '../home_view.dart';
-
-class HomeMapBody extends StatefulWidget {
-  const HomeMapBody({super.key});
+class MyMapScreen extends StatefulWidget {
+  const MyMapScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeMapBody> createState() => HomeMapBodyState();
+  // ignore: library_private_types_in_public_api
+  _MyMapScreenState createState() => _MyMapScreenState();
 }
 
-class HomeMapBodyState extends State<HomeMapBody> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(40.8733311,29.2530772),
-    zoom: 15.59,
-  );
-
+class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin { 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      appBar: AppBar(
+        title: const Text('Map'),
+      ),
+      body: currentP == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : GoogleMap(
+              onMapCreated: ((GoogleMapController controller) =>
+                  mapController.complete(controller)),
+              initialCameraPosition: CameraPosition(
+                target: school,
+                zoom: 13,
+              ),
+              markers: {
+                Marker(
+                  markerId: const MarkerId("_currentLocation"),
+                  icon: BitmapDescriptor.defaultMarker,
+                  position: currentP!,
+                ),
+                 Marker(
+                    markerId: const MarkerId("_sourceLocation"),
+                    icon: BitmapDescriptor.defaultMarker,
+                    position: school),
+                 Marker(
+                    markerId: const MarkerId("_destionationLocation"),
+                    icon: BitmapDescriptor.defaultMarker,
+                    position: myHome)
+              },
+              polylines: Set<Polyline>.of(polylines.values),
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
+        onPressed: goToCurrentLocation,
+        child: const Icon(Icons.location_on),
       ),
     );
   }
+
 }
