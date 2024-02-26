@@ -11,7 +11,7 @@ mixin HomeMapMixin on State<MyMapScreen> {
       Completer<GoogleMapController>();
   get mapController => _mapController.future;
 
-  late GoogleMapController googleMapController;
+  
 
   LatLng myHome = const LatLng(39.9845136, 32.7671988);
   LatLng school = const LatLng(39.9016974, 32.779087);
@@ -35,25 +35,6 @@ mixin HomeMapMixin on State<MyMapScreen> {
         (coordinates) => generatePolylinesFromPoints(coordinates),
       ),
     );
-  }
-
-  get goToCurrentLocation => _goToCurrentLocation;
-  Future<void> _goToCurrentLocation() async {
-    Position position = await determinePosition();
-    googleMapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 15,
-        ),
-      ),
-    );
-  }
-
-  Future<Position> determinePosition() async {
-    permissionControl();
-    Position position = await Geolocator.getCurrentPosition();
-    return position;
   }
 
   Future<void> _cameraToPosition(LatLng pos) async {

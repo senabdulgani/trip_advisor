@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:trip_advisor/feature/home/view/mixin/home_bottom_mixin.dart';
+import 'package:trip_advisor/feature/home/view/widget/home_action_button.dart';
 import 'package:trip_advisor/feature/home/view/widget/home_map.dart';
 import 'package:trip_advisor/product/init/language/locale_keys.g.dart';
 
@@ -19,10 +20,14 @@ class _HomeViewState extends State<HomeView> {
   
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      // appBar: HomeAppBar(),
-      body: MyMapScreen(),
-      bottomNavigationBar: BottomNavBar(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Map'),
+      ),
+      body: const MyMapScreen(),
+      bottomNavigationBar: const BottomNavBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: const HomeActionButton(),
     );
   }
 }

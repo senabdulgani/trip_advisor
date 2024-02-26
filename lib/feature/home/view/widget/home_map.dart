@@ -13,44 +13,39 @@ class MyMapScreen extends StatefulWidget {
 class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin { 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map'),
-      ),
-      body: currentP == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : GoogleMap(
-              onMapCreated: ((GoogleMapController controller) =>
-                  mapController.complete(controller)),
-              initialCameraPosition: CameraPosition(
-                target: school,
-                zoom: 13,
-              ),
-              markers: {
-                Marker(
-                  markerId: const MarkerId("_currentLocation"),
-                  icon: BitmapDescriptor.defaultMarker,
-                  position: currentP!,
+    return SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: currentP == null
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : GoogleMap(
+                  onMapCreated: ((GoogleMapController controller) =>
+                      mapController.complete(controller)),
+                  initialCameraPosition: CameraPosition(
+                    target: school,
+                    zoom: 13,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: const MarkerId("_currentLocation"),
+                      icon: BitmapDescriptor.defaultMarker,
+                      position: currentP!,
+                    ),
+                     Marker(
+                        markerId: const MarkerId("_sourceLocation"),
+                        icon: BitmapDescriptor.defaultMarker,
+                        position: school),
+                     Marker(
+                        markerId: const MarkerId("_destionationLocation"),
+                        icon: BitmapDescriptor.defaultMarker,
+                        position: myHome)
+                  },
+                  polylines: Set<Polyline>.of(polylines.values),
                 ),
-                 Marker(
-                    markerId: const MarkerId("_sourceLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: school),
-                 Marker(
-                    markerId: const MarkerId("_destionationLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: myHome)
-              },
-              polylines: Set<Polyline>.of(polylines.values),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        onPressed: goToCurrentLocation,
-        child: const Icon(Icons.location_on),
-      ),
+        ),
     );
   }
 

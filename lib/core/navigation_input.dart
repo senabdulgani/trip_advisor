@@ -16,48 +16,38 @@ class LocationInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: 
-          isFirst?
-          const BorderRadius.vertical(
-            top: Radius.circular(10),
-          ):
-          const BorderRadius.vertical(
-            bottom: Radius.circular(10),
+    return TextField(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        border: isFirst
+            ? const UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(10),
+                ),
+              )
+            : const UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(10),
+                ),
+              ),
+        contentPadding: const EdgeInsets.all(12.0),
+        prefixIcon: Icon(iconData),
+        hintText: text,
+        hintStyle: const TextStyle(
+            fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
+        suffixIcon: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+          child: VerticalDivider(
+            color: Colors.black,
+            thickness: 0,
           ),
         ),
-        height: MediaQuery.of(context).size.height * 0.06,
-        width: MediaQuery.of(context).size.width,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Icon(iconData),
-            ),
-            Text(
-              text,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey),
-            ),
-            const Spacer(),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-              child: VerticalDivider(
-                color: Colors.black,
-                thickness: 0,
-              ),
-            ),
-            const Text(
-              'Map',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.05,
-            ),
-          ],
+        suffix: const Text(
+          'Map',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
     );

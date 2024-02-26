@@ -18,7 +18,7 @@ mixin HomeBottomMixin on State<BottomNavBar> {
 
         if (index == 0) {
           BasicHelpers.showModalSheet(
-              context, const NavigationInputsBottomSheet());
+              context, NavigationInputsBottomSheet());
         } else if (index == 1) {
           BasicHelpers.showModalSheet(context, const SearchLocationScreen());
         } else if (index == 2) {
@@ -38,13 +38,17 @@ mixin HomeBottomMixin on State<BottomNavBar> {
   }
 }
 
+// ignore: must_be_immutable
 class NavigationInputsBottomSheet extends StatelessWidget {
-  const NavigationInputsBottomSheet({
+  NavigationInputsBottomSheet({
     super.key,
   });
 
+  bool isInputMode = false;
+
   @override
   Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
@@ -52,7 +56,7 @@ class NavigationInputsBottomSheet extends StatelessWidget {
           top: Radius.circular(8),
         ),
       ),
-      height: MediaQuery.of(context).size.height * 0.24,
+      height: isInputMode ? deviceHeight * 0.8 :deviceHeight * 0.24,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
         child: Column(

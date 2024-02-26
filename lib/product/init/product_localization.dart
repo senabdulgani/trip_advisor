@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:trip_advisor/product/utility/constants/enums/locals.dart';
 
-/// Product localization manager
+// Product localization manager
 @immutable
 final class ProductLocalization extends EasyLocalization {
   ProductLocalization({
