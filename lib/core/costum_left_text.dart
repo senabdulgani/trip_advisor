@@ -15,7 +15,11 @@ class CostumHeaderInLeft extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ),
           const Spacer(),

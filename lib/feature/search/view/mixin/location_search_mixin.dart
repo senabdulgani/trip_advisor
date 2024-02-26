@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:trip_advisor/feature/home/view/mixin/home_bottom_mixin.dart';
 import 'package:trip_advisor/feature/search/constants.dart';
-import 'package:trip_advisor/feature/search/location_search_screen.dart';
 import 'package:trip_advisor/feature/search/models/autocomplate_prediction.dart';
 import 'package:trip_advisor/feature/search/models/place_auto_complate_response.dart';
 import 'package:trip_advisor/product/service/network_utility.dart';
 
-mixin LocationSearchMixin on State<SearchLocationScreen> {
+mixin LocationSearchMixin on State<NavigationInputsBottomSheet> {
   
   List<AutocompletePrediction> placePredictions = [];
 

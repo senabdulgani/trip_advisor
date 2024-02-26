@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LocationInput extends StatelessWidget {
-  final Function()? onTap;
+  final VoidCallback? onChanged;
   final String text;
   final IconData iconData;
   final bool isFirst;
@@ -10,13 +10,16 @@ class LocationInput extends StatelessWidget {
     super.key,
     required this.text,
     required this.iconData,
-    this.onTap,
+    this.onChanged,
     required this.isFirst,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      onChanged: (value) {
+        onChanged!();
+      },
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,

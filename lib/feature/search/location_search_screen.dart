@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:trip_advisor/feature/search/view/mixin/location_search_mixin.dart';
+import 'package:trip_advisor/feature/search/models/autocomplate_prediction.dart';
+import 'package:trip_advisor/feature/search/models/place_auto_complate_response.dart';
+import 'package:trip_advisor/product/service/network_utility.dart';
 import 'components/location_list_tile.dart';
 import 'constants.dart';
 
@@ -10,12 +12,35 @@ class SearchLocationScreen extends StatefulWidget {
   State<SearchLocationScreen> createState() => _SearchLocationScreenState();
 }
 
-class _SearchLocationScreenState extends State<SearchLocationScreen> with LocationSearchMixin {
+class _SearchLocationScreenState extends State<SearchLocationScreen>  {
+
+  List<AutocompletePrediction> placePredictions = [];
+
+  void placeAutocomplate(String query) async {
+    Uri uri = Uri.https(
+        "maps.googleapis.com",
+        'maps/api/place/autocomplete/json',
+        {
+          "input": query,
+          "key": apiKey,
+        });
+    String? response = await NetworkUtility.fetchUrl(uri);
+    if (response != null) {
+      PlaceAutocompleteResponse result =
+          PlaceAutocompleteResponse.parseAutocompleteResult(response);
+      if (result.predictions != null) {
+        setState(() {
+          placePredictions = result.predictions!;
+        });
+      }
+    }
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: Column(
         children: [
           Expanded(
