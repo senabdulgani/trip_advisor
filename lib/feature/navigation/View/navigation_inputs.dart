@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trip_advisor/core/costum_left_text.dart';
+import 'package:trip_advisor/feature/home/view/mixin/home_button_mixin.dart';
 import 'package:trip_advisor/feature/search/components/location_list_tile.dart';
 import 'package:trip_advisor/feature/search/constants.dart';
 import 'package:trip_advisor/feature/search/view/mixin/location_search_mixin.dart';
@@ -46,15 +48,29 @@ class _NavigationInputsBottomSheetState
       context.read<NavigationHelper>();
 
   Future<void> searchNavigationInfo() async {
-    LatLng fromCoordinates =
-        await getCoordinatesFromAddress(_fromController.text);
-    LatLng toCoordinates = await getCoordinatesFromAddress(_toController.text);
+    Position currentPosition = await HomeActionButtonMixin.determinePosition();
+    
+    late LatLng fromCoordinates;
+    late LatLng toCoordinates;
+
+    if (_fromController.text == "Current Location") {
+      fromCoordinates = LatLng(currentPosition.latitude, currentPosition.longitude);
+    } else {
+      fromCoordinates = await getCoordinatesFromAddress(_fromController.text);
+    }
+
+    if (_toController.text == "Current Location") {
+      toCoordinates = LatLng(currentPosition.latitude, currentPosition.longitude);
+    } else {
+      toCoordinates = await getCoordinatesFromAddress(_toController.text);
+    }
+  
 
     List<LatLng> polylineCoordinates = await navigationProvider
         .getPolyLinePoints(fromCoordinates, toCoordinates);
 
     PolylineId id = PolylineId(
-        'poly_${navigationProvider.polylines.length + 1}'); // Generate a unique polyline ID
+        'poly_${navigationProvider.polylines.length + 1}');
     Polyline polyline = Polyline(
       polylineId: id,
       color: Colors.blue,
@@ -63,7 +79,6 @@ class _NavigationInputsBottomSheetState
     );
 
     navigationProvider.polylines.addAll({id: polyline});
-    // add markers to the map from and to location
     navigationProvider.markers.addAll(
       {
         const MarkerId('from'): Marker(
@@ -76,6 +91,9 @@ class _NavigationInputsBottomSheetState
         ),
       },
     );
+
+    setState(() {});
+
   }
 
   Future<LatLng> getCoordinatesFromAddress(String address) async {
@@ -134,6 +152,7 @@ class _NavigationInputsBottomSheetState
               child: ElevatedButton(
                   onPressed: () async {
                     await searchNavigationInfo();
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
@@ -154,7 +173,13 @@ class _NavigationInputsBottomSheetState
                   )),
             ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                if (isFrom) {
+                  _fromController.text =  "Current Location";
+                } else {
+                  _toController.text = "Current Location";
+                }
+              },
               icon: const Icon(
                 Icons.gps_fixed,
                 color: textColorLightTheme,
@@ -179,7 +204,7 @@ class _NavigationInputsBottomSheetState
                   location: placePredictions[index].description!,
                   controller: isFrom
                       ? _fromController
-                      : _toController, // todo Burada kullanıcı hangi controller ı seçti ona bak.
+                      : _toController,
                 ),
               ),
             ),
@@ -188,6 +213,8 @@ class _NavigationInputsBottomSheetState
       ),
     );
   }
+
+  
 
   InputDecoration inputNavigationDecoration(
       String text, IconData icon, bool isFirst) {

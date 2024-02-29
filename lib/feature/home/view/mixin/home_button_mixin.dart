@@ -10,7 +10,7 @@ mixin HomeActionButtonMixin on State<HomeActionButton> {
 
   late GoogleMapController googleMapController;
 
-  Future<Position> determinePosition() async {
+  static Future<Position> determinePosition() async {
     HomeMapMixin.permissionControl();
     Position position = await Geolocator.getCurrentPosition();
     return position;
