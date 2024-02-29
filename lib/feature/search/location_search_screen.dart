@@ -47,13 +47,8 @@ class _SearchLocationScreenState extends State<SearchLocationScreen>  {
             child: ListView.builder(
               itemCount: placePredictions.length,
               itemBuilder: (context, index) => LocationListTile(
-                press: () {
-                  // go to the location on the map
-                  // debugPrint(placePredictions[index].placeId);
-                  // debugPrint(placePredictions[index].description!);
-                  debugPrint(placePredictions[index].reference);
-                },
                 location: placePredictions[index].description!,
+                controller: TextEditingController(),
               ),
             ),
           ),

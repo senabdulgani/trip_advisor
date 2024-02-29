@@ -7,6 +7,7 @@ import 'package:trip_advisor/feature/home/view/widget/home_map.dart';
 import 'package:trip_advisor/feature/search/constants.dart';
 
 mixin HomeMapMixin on State<MyMapScreen> {
+  
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
   get mapController => _mapController.future;

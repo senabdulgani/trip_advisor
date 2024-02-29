@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trip_advisor/feature/home/view/mixin/home_map_mixin.dart';
@@ -11,6 +13,11 @@ class MyMapScreen extends StatefulWidget {
 }
 
 class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin { 
+
+  static final Completer<GoogleMapController> _mapController =
+      Completer<GoogleMapController>();
+  get mapController => _mapController;
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
