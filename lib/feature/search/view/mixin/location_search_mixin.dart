@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trip_advisor/feature/navigation/View/navigation_inputs.dart';
 import 'package:trip_advisor/feature/search/constants.dart';
 import 'package:trip_advisor/feature/search/models/autocomplate_prediction.dart';
@@ -10,6 +9,7 @@ import 'package:trip_advisor/feature/search/models/place_auto_complate_response.
 import 'package:trip_advisor/product/service/network_utility.dart';
 
 mixin NavigationInputsMixin on State<NavigationInputsBottomSheet> {
+  
   List<AutocompletePrediction> placePredictions = [];
 
   void placeAutocomplate(String query) async {
@@ -51,18 +51,18 @@ mixin NavigationInputsMixin on State<NavigationInputsBottomSheet> {
     return {'latitude': 0.0, 'longitude': 0.0};
   }
 
-  final Completer<GoogleMapController> _mapController =
-      Completer<GoogleMapController>();
+  // final Completer<GoogleMapController> _mapController =
+  //     Completer<GoogleMapController>();
 
-  get cameraToPosition => _cameraToPosition;
-  Future<void> _cameraToPosition(String address) async {
-    final coordinates = await getCoordinates(address);
-    GoogleMapController controller = await _mapController.future;
-    CameraPosition newCameraPosition = CameraPosition(
-      target: LatLng(coordinates['latitude'], coordinates['longitude']),
-      zoom: 13,
-    );
-    await controller
-        .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
-  }
+  // get cameraToPosition => _cameraToPosition;
+  // Future<void> _cameraToPosition(String address) async {
+  //   final coordinates = await getCoordinates(address);
+  //   GoogleMapController controller = await _mapController.future;
+  //   CameraPosition newCameraPosition = CameraPosition(
+  //     target: LatLng(coordinates['latitude'], coordinates['longitude']),
+  //     zoom: 13,
+  //   );
+  //   await controller
+  //       .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+  // }
 }

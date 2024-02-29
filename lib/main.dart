@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trip_advisor/feature/home/view/home_view.dart';
 import 'package:trip_advisor/product/init/product_localization.dart';
-import 'package:trip_advisor/product/state/provider/latest_location.dart';
+import 'package:trip_advisor/product/state/provider/navigation_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LatestLocation()),
+        ChangeNotifierProvider(create: (context) => NavigationHelper()),
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,

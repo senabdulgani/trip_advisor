@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:trip_advisor/feature/home/view/mixin/home_map_mixin.dart';
+import 'package:trip_advisor/product/state/provider/navigation_provider.dart';
 
 class MyMapScreen extends StatefulWidget {
   const MyMapScreen({Key? key}) : super(key: key);
@@ -12,48 +14,40 @@ class MyMapScreen extends StatefulWidget {
   _MyMapScreenState createState() => _MyMapScreenState();
 }
 
-class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin { 
-
+class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin {
   static final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
+
+  @override
   get mapController => _mapController;
-  
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: currentP == null
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : GoogleMap(
-                  onMapCreated: ((GoogleMapController controller) =>
-                      mapController.complete(controller)),
-                  initialCameraPosition: CameraPosition(
-                    target: school,
-                    zoom: 13,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId("_currentLocation"),
-                      icon: BitmapDescriptor.defaultMarker,
-                      position: currentP!,
-                    ),
-                     Marker(
-                        markerId: const MarkerId("_sourceLocation"),
-                        icon: BitmapDescriptor.defaultMarker,
-                        position: school),
-                     Marker(
-                        markerId: const MarkerId("_destionationLocation"),
-                        icon: BitmapDescriptor.defaultMarker,
-                        position: myHome)
-                  },
-                  polylines: Set<Polyline>.of(polylines.values),
+      physics: const NeverScrollableScrollPhysics(),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: currentP == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : GoogleMap(
+                onMapCreated: ((GoogleMapController controller) =>
+                    mapController.complete(controller)),
+                initialCameraPosition: CameraPosition(
+                  target: school,
+                  zoom: 13,
                 ),
-        ),
+                markers: context.watch<NavigationHelper>().markers.isNotEmpty
+                    ? Set<Marker>.of(
+                        context.watch<NavigationHelper>().markers.values)
+                    : {},
+                polylines: context.watch<NavigationHelper>().polylines.isNotEmpty
+                    ? Set<Polyline>.of(
+                        context.watch<NavigationHelper>().polylines.values)
+                    : {},
+              ),
+      ),
     );
   }
-
 }
