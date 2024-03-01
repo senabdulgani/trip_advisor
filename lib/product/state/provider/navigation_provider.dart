@@ -7,14 +7,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trip_advisor/feature/search/constants.dart';
 
 class NavigationHelper extends ChangeNotifier {
-  
   Map<PolylineId, Polyline> polylines = {};
   Map<MarkerId, Marker> markers = {};
-  
+
   String fromController = "";
   String toController = "";
 
-  Future<List<LatLng>> getPolyLinePoints(LatLng start, LatLng destination) async {
+
+  LatLng? _currentP;
+  get currentP => _currentP;
+
+  Future<List<LatLng>> getPolyLinePoints(
+      LatLng start, LatLng destination) async {
     List<LatLng> polylineCoordinates = [];
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
@@ -30,9 +34,10 @@ class NavigationHelper extends ChangeNotifier {
     } else {
       debugPrint(result.errorMessage);
     }
+    notifyListeners();
+
     return polylineCoordinates;
   }
-
 
   late GoogleMapController googleMapController;
 
@@ -40,22 +45,36 @@ class NavigationHelper extends ChangeNotifier {
       Completer<GoogleMapController>();
   get mapController => _mapController;
 
-  
-  get cameraToPosition => _cameraToPosition;
-  Future<void> _cameraToPosition(LatLng pos) async {
+  Future<void> cameraToPosition(LatLng pos, double zoom, double tilt) async {
     GoogleMapController controller = await _mapController.future;
     CameraPosition newCameraPosition = CameraPosition(
       target: pos,
-      zoom: 13,
+      zoom: zoom,
+      tilt: tilt,
     );
     await controller
         .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+
+    notifyListeners();
   }
-  
+
   Future<Position> determinePosition() async {
     permissionControl();
     Position position = await Geolocator.getCurrentPosition();
     return position;
+  }
+
+  final LocationSettings locationSettings = const LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 100,
+  );
+
+  void locationTracking() {
+    Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+      (Position position) {
+        
+      },
+    );
   }
 
   void permissionControl() async {

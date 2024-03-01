@@ -24,6 +24,8 @@ class _HomeActionButtonState extends State<HomeActionButton> {
         navigationProvider.determinePosition().then((position) {
                   navigationProvider.cameraToPosition(
                     LatLng(position.latitude, position.longitude),
+                    16,
+                    0,
                   );
                 });
       },

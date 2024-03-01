@@ -13,8 +13,6 @@ class MyMapScreen extends StatefulWidget {
 }
 
 class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin {
-
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -26,20 +24,32 @@ class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin {
                 child: CircularProgressIndicator(),
               )
             : GoogleMap(
+                compassEnabled: true,
+                buildingsEnabled: false,
+                fortyFiveDegreeImageryEnabled: false,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: false,
+                mapToolbarEnabled: true,
+                // onTap: (argument) {
+                //   add markers to the map on tap
+                // },
                 onMapCreated: ((GoogleMapController controller) =>
-                    context.read<NavigationHelper>().mapController.complete(controller)),
+                    context.read<NavigationHelper>().mapController.complete(
+                          controller,
+                        )),
                 initialCameraPosition: CameraPosition(
                   target: school,
-                  zoom: 13,
+                  zoom: 15,
                 ),
                 markers: context.watch<NavigationHelper>().markers.isNotEmpty
                     ? Set<Marker>.of(
                         context.watch<NavigationHelper>().markers.values)
                     : {},
-                polylines: context.watch<NavigationHelper>().polylines.isNotEmpty
-                    ? Set<Polyline>.of(
-                        context.watch<NavigationHelper>().polylines.values)
-                    : {},
+                polylines:
+                    context.watch<NavigationHelper>().polylines.isNotEmpty
+                        ? Set<Polyline>.of(
+                            context.watch<NavigationHelper>().polylines.values)
+                        : {},
               ),
       ),
     );

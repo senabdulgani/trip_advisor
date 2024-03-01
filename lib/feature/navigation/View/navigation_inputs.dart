@@ -48,28 +48,29 @@ class _NavigationInputsBottomSheetState
 
   Future<void> searchNavigationInfo() async {
     Position currentPosition = await navigationProvider.determinePosition();
-    
+
     late LatLng fromCoordinates;
     late LatLng toCoordinates;
 
     if (_fromController.text == "Current Location") {
-      fromCoordinates = LatLng(currentPosition.latitude, currentPosition.longitude);
+      fromCoordinates =
+          LatLng(currentPosition.latitude, currentPosition.longitude);
     } else {
       fromCoordinates = await getCoordinatesFromAddress(_fromController.text);
     }
 
     if (_toController.text == "Current Location") {
-      toCoordinates = LatLng(currentPosition.latitude, currentPosition.longitude);
+      toCoordinates =
+          LatLng(currentPosition.latitude, currentPosition.longitude);
     } else {
       toCoordinates = await getCoordinatesFromAddress(_toController.text);
     }
-  
 
     List<LatLng> polylineCoordinates = await navigationProvider
         .getPolyLinePoints(fromCoordinates, toCoordinates);
 
-    PolylineId id = PolylineId(
-        'poly_${navigationProvider.polylines.length + 1}');
+    PolylineId id =
+        PolylineId('poly_${navigationProvider.polylines.length + 1}');
     Polyline polyline = Polyline(
       polylineId: id,
       color: Colors.blue,
@@ -80,17 +81,16 @@ class _NavigationInputsBottomSheetState
     navigationProvider.polylines.addAll({id: polyline});
     navigationProvider.markers.addAll(
       {
-        const MarkerId('from'): Marker(
-          markerId: const MarkerId('from'),
-          position: fromCoordinates,
-        ),
+        // const MarkerId('from'): Marker(
+        //   markerId: const MarkerId('from'),
+        //   position: fromCoordinates,
+        // ),
         const MarkerId('to'): Marker(
           markerId: const MarkerId('to'),
           position: toCoordinates,
         ),
       },
     );
-
   }
 
   Future<LatLng> getCoordinatesFromAddress(String address) async {
@@ -101,6 +101,8 @@ class _NavigationInputsBottomSheetState
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
+    // add Provider
+    NavigationHelper helperProvider = Provider.of<NavigationHelper>(context);
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
@@ -148,7 +150,30 @@ class _NavigationInputsBottomSheetState
               padding: const EdgeInsets.all(defaultPadding),
               child: ElevatedButton(
                   onPressed: () async {
-                    await searchNavigationInfo();
+                    try {
+                      await searchNavigationInfo();
+                    } catch (exception) {
+                      debugPrint('Error: $exception');
+                      // todo Uygun bir rota bulunamadı.
+                    }
+                    late LatLng fromCoordinates;
+                    if (_fromController.text == "Current Location") {
+                      Position currentPosition =
+                          await navigationProvider.determinePosition();
+                      fromCoordinates = LatLng(
+                          currentPosition.latitude, currentPosition.longitude);
+                      debugPrint('Flag Current Location: $fromCoordinates');
+                    } else {
+                      fromCoordinates =
+                          await getCoordinatesFromAddress(_fromController.text);
+                      debugPrint('Flag To Location: $fromCoordinates');
+                    }
+                    helperProvider.cameraToPosition(
+                      LatLng(
+                          fromCoordinates.latitude, fromCoordinates.longitude),
+                      17,
+                      45.0,
+                    );
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
@@ -172,10 +197,22 @@ class _NavigationInputsBottomSheetState
             ElevatedButton.icon(
               onPressed: () async {
                 if (isFrom) {
-                  _fromController.text =  "Current Location";
+                  _fromController.text = "Current Location";
                 } else {
                   _toController.text = "Current Location";
                 }
+                const LocationSettings locationSettings =
+                    LocationSettings(
+                  accuracy: LocationAccuracy.high,
+                  distanceFilter: 100,
+                );
+                
+                Geolocator.getPositionStream(locationSettings: locationSettings)
+                    .listen(
+                  (Position position) {
+
+                  },
+                );
               },
               icon: const Icon(
                 Icons.gps_fixed,
@@ -192,16 +229,13 @@ class _NavigationInputsBottomSheetState
                 ),
               ),
             ),
-
             SizedBox(
               height: deviceHeight * 0.2,
               child: ListView.builder(
                 itemCount: placePredictions.length,
                 itemBuilder: (context, index) => LocationListTile(
                   location: placePredictions[index].description!,
-                  controller: isFrom
-                      ? _fromController
-                      : _toController,
+                  controller: isFrom ? _fromController : _toController,
                 ),
               ),
             ),
@@ -211,7 +245,6 @@ class _NavigationInputsBottomSheetState
     );
   }
 
-  
   // todo Aynı decoration'ı başka bir sayfada kullanıyorum refactor et.
   InputDecoration inputNavigationDecoration(
       String text, IconData icon, bool isFirst) {

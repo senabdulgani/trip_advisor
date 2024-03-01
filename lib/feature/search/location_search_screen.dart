@@ -16,7 +16,6 @@ class SearchLocationScreen extends StatefulWidget {
 }
 
 class _SearchLocationScreenState extends State<SearchLocationScreen> {
-
   List<AutocompletePrediction> placePredictions = [];
 
   final TextEditingController _searchController = TextEditingController();
@@ -49,7 +48,8 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
       child: Column(
         children: [
           placePredictions.isEmpty
-              ? const Expanded(child: Center(child: CircularProgressIndicator()))
+              ? const Expanded(
+                  child: Center(child: CircularProgressIndicator()))
               : Expanded(
                   child: ListView.builder(
                     itemCount: placePredictions.length,
@@ -63,12 +63,16 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
             padding: const EdgeInsets.all(defaultPadding),
             child: ElevatedButton.icon(
               onPressed: () {
-                navigationProvider.determinePosition().then((position) {
-                  navigationProvider.cameraToPosition(
-                    LatLng(position.latitude, position.longitude),
-                  );
-                });
-                // Navigator.pop(context);
+                navigationProvider.determinePosition().then(
+                  (position) {
+                    navigationProvider.cameraToPosition(
+                      LatLng(position.latitude, position.longitude),
+                      15,
+                      0,
+                    );
+                  },
+                );
+                Navigator.pop(context);
               },
               icon: const Icon(
                 Icons.gps_fixed,

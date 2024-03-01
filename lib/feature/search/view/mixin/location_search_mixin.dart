@@ -50,19 +50,4 @@ mixin NavigationInputsMixin on State<NavigationInputsBottomSheet> {
 
     return {'latitude': 0.0, 'longitude': 0.0};
   }
-
-  // final Completer<GoogleMapController> _mapController =
-  //     Completer<GoogleMapController>();
-
-  // get cameraToPosition => _cameraToPosition;
-  // Future<void> _cameraToPosition(String address) async {
-  //   final coordinates = await getCoordinates(address);
-  //   GoogleMapController controller = await _mapController.future;
-  //   CameraPosition newCameraPosition = CameraPosition(
-  //     target: LatLng(coordinates['latitude'], coordinates['longitude']),
-  //     zoom: 13,
-  //   );
-  //   await controller
-  //       .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
-  // }
 }
