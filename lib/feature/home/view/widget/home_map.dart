@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +13,7 @@ class MyMapScreen extends StatefulWidget {
 }
 
 class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin {
-  static final Completer<GoogleMapController> _mapController =
-      Completer<GoogleMapController>();
 
-  @override
-  get mapController => _mapController;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +27,7 @@ class _MyMapScreenState extends State<MyMapScreen> with HomeMapMixin {
               )
             : GoogleMap(
                 onMapCreated: ((GoogleMapController controller) =>
-                    mapController.complete(controller)),
+                    context.read<NavigationHelper>().mapController.complete(controller)),
                 initialCameraPosition: CameraPosition(
                   target: school,
                   zoom: 13,

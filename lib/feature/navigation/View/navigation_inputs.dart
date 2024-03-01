@@ -3,7 +3,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trip_advisor/core/costum_left_text.dart';
-import 'package:trip_advisor/feature/home/view/mixin/home_button_mixin.dart';
 import 'package:trip_advisor/feature/search/components/location_list_tile.dart';
 import 'package:trip_advisor/feature/search/constants.dart';
 import 'package:trip_advisor/feature/search/view/mixin/location_search_mixin.dart';
@@ -48,7 +47,7 @@ class _NavigationInputsBottomSheetState
       context.read<NavigationHelper>();
 
   Future<void> searchNavigationInfo() async {
-    Position currentPosition = await HomeActionButtonMixin.determinePosition();
+    Position currentPosition = await navigationProvider.determinePosition();
     
     late LatLng fromCoordinates;
     late LatLng toCoordinates;
@@ -91,8 +90,6 @@ class _NavigationInputsBottomSheetState
         ),
       },
     );
-
-    setState(() {});
 
   }
 
@@ -215,7 +212,7 @@ class _NavigationInputsBottomSheetState
   }
 
   
-
+  // todo Aynı decoration'ı başka bir sayfada kullanıyorum refactor et.
   InputDecoration inputNavigationDecoration(
       String text, IconData icon, bool isFirst) {
     return InputDecoration(
