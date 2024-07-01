@@ -13,19 +13,15 @@ class NavigationHelper extends ChangeNotifier {
   String fromController = "";
   String toController = "";
 
-
   LatLng? _currentP;
   get currentP => _currentP;
 
-  Future<List<LatLng>> getPolyLinePoints(
-      LatLng start, LatLng destination) async {
+  Future<List<LatLng>> getPolyLinePoints(LatLng start, LatLng destination) async {
     List<LatLng> polylineCoordinates = [];
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      apiKey,
-      PointLatLng(start.latitude, start.longitude),
-      PointLatLng(destination.latitude, destination.longitude),
-      travelMode: TravelMode.driving,
+      request: PolylineRequest(origin: PointLatLng(start.latitude, start.longitude), destination: PointLatLng(destination.latitude, destination.longitude), mode: TravelMode.driving),
+      googleApiKey: apiKey,
     );
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
@@ -41,8 +37,7 @@ class NavigationHelper extends ChangeNotifier {
 
   late GoogleMapController googleMapController;
 
-  final Completer<GoogleMapController> _mapController =
-      Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _mapController = Completer<GoogleMapController>();
   get mapController => _mapController;
 
   Future<void> cameraToPosition(LatLng pos, double zoom, double tilt) async {
@@ -52,8 +47,7 @@ class NavigationHelper extends ChangeNotifier {
       zoom: zoom,
       tilt: tilt,
     );
-    await controller
-        .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+    await controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
 
     notifyListeners();
   }
@@ -71,9 +65,7 @@ class NavigationHelper extends ChangeNotifier {
 
   void locationTracking() {
     Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-      (Position position) {
-        
-      },
+      (Position position) {},
     );
   }
 
